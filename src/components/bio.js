@@ -25,7 +25,8 @@ const Bio = () => {
         siteMetadata {
           author
           social {
-            twitter
+            twitter,
+            github
           }
         }
       }
@@ -54,11 +55,14 @@ const Bio = () => {
         }}
       />
       <p>
-        Written by <strong>{author}</strong> who lives and works in San
-        Francisco building useful things.
+        Written by <strong>{author}</strong> - Full Stack developer in Euvic. Living and working in Opole.
         {` `}
+        Check out my:{` `} 
         <a href={`https://twitter.com/${social.twitter}`}>
-          You should follow him on Twitter
+          Twitter
+        </a> |{` `}
+        <a href={`https://github.com/${social.github}`}>
+          GitHub
         </a>
       </p>
     </div>
