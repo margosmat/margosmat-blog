@@ -1,0 +1,128 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Tile from '../../components/Tile';
+import TechCarousel from '../../components/TechCarousel';
+import ThemeToggle from '../../components/ThemeToggle';
+import { FaDownload, FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pl' } },
+  ];
+}
+
+const { lang } = Astro.params;
+
+const i18n = {
+  en: {
+    intro: "Hi, I'm Mateusz Margos. I build full-stack web applications and scalable cloud systems.",
+    resume: "Download Resume",
+    social: "Find me on",
+    blog: "Read my Blog",
+  },
+  pl: {
+    intro: "Cześć, jestem Mateusz Margos. Tworzę aplikacje webowe full-stack i skalowalne systemy chmurowe.",
+    resume: "Pobierz CV",
+    social: "Znajdź mnie",
+    blog: "Czytaj Bloga",
+  },
+};
+
+const t = i18n[lang as keyof typeof i18n];
+
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .filter(post => post.data.lang === lang)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title="Mateusz Margos - Portfolio" lang={lang as string}>
+  {/* Controls Overlay - Top Right */}
+  <div class="fixed top-4 right-4 z-50 flex items-center gap-4 bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-sm border border-foreground/10">
+      <ThemeToggle client:load />
+      <div class="h-6 w-px bg-foreground/20"></div>
+      <a href={lang === 'en' ? '/pl' : '/en'} class="font-bold hover:underline text-lg px-1 min-w-[2rem] text-center">
+        {lang === 'en' ? 'PL' : 'EN'}
+      </a>
+  </div>
+
+  <main class="min-h-screen p-4 md:p-8 flex items-center justify-center">
+    <div class="max-w-7xl w-full grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-4 h-auto md:h-[800px]">
+          
+      {/* 1. INTRO (2x2) */}
+      <Tile className="col-span-1 md:col-span-2 md:row-span-2 flex flex-col justify-between p-8" hoverColor="blue">
+        <div class="flex justify-between items-start w-full">
+           <img src="/logo.png" alt="MM Logo" class="w-12 h-12 object-contain" />
+        </div>
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">Mateusz Margos</h1>
+          <p class="text-xl text-foreground/80">{t.intro}</p>
+        </div>
+      </Tile>
+
+      {/* 2. RESUME (1x2 now to fill gap) */}
+      <Tile className="col-span-1 md:col-span-1 md:row-span-2 flex flex-col items-center justify-center relative group" hoverColor="green">
+        <FaDownload class="w-16 h-16 mb-4 group-hover:scale-110 transition-transform" />
+        <span class="font-bold text-xl">{t.resume}</span>
+        <a href="/resume.pdf" download class="absolute inset-0"></a>
+      </Tile>
+
+      {/* 3. SOCIAL (1x2) - 2x2 Grid Layout */}
+      <Tile className="col-span-1 md:col-span-1 md:row-span-2 flex flex-col items-center justify-center gap-8" hoverColor="orange">
+        <h3 class="text-xl font-bold">{t.social}</h3>
+        <div class="grid grid-cols-[100px_100px] w-[200px]">
+          <div class="flex items-center justify-center p-4">
+             <a href="https://github.com/margosmat" class="text-5xl md:text-6xl hover:text-black dark:hover:text-white transition-colors hover:scale-110 duration-200" aria-label="Github"><FaGithub /></a>
+          </div>
+          <div class="flex items-center justify-center p-4">
+             <a href="https://www.linkedin.com/in/mateusz-margos/" class="text-5xl md:text-6xl hover:text-blue-600 transition-colors hover:scale-110 duration-200" aria-label="LinkedIn"><FaLinkedin /></a>
+          </div>
+          <div class="flex items-center justify-center p-4">
+             <a href="https://x.com/margosmat" class="text-5xl md:text-6xl hover:text-black dark:hover:text-white transition-colors hover:scale-110 duration-200" aria-label="X (Twitter)"><FaXTwitter /></a>
+          </div>
+          <div class="flex items-center justify-center p-4">
+             <a href="mailto:mateuszmargos@gmail.com" class="text-5xl md:text-6xl hover:text-red-500 transition-colors hover:scale-110 duration-200" aria-label="Email"><FaEnvelope /></a>
+          </div>
+        </div>
+      </Tile>
+
+      {/* 5. TECH STACK (2x2) */}
+      <Tile className="col-span-1 md:col-span-2 md:row-span-2" hoverColor="purple">
+         <TechCarousel client:only="react" />
+      </Tile>
+
+      {/* 6. BLOG (2x2) */}
+      <Tile className="col-span-1 md:col-span-2 md:row-span-2 p-8 relative group flex flex-col" hoverColor="red">
+         <h2 class="text-3xl font-bold mb-6">Blog</h2>
+         <div class="space-y-6 flex-1">
+            {recentPosts.map(post => (
+               <article class="group/post border-b border-foreground/10 pb-4 last:border-0 relative z-20">
+                   <a href={`/${lang}/blog/${post.slug}`} class="block group-hover/post:translate-x-2 transition-transform duration-200">
+                     <h3 class="font-bold text-xl group-hover/post:text-red-500 transition-colors">{post.data.title}</h3>
+                     <p class="text-sm opacity-60 mt-1">
+                        {post.data.pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}
+                     </p>
+                   </a>
+               </article>
+            ))}
+            {recentPosts.length === 0 && <p class="opacity-50">No posts yet.</p>}
+         </div>
+         
+         {/* Link to all posts */}
+         <div class="mt-auto pt-4 flex justify-end relative z-20">
+            <a href={`/${lang}/blog`} class="font-bold hover:underline flex items-center gap-2">
+               {t.blog} &rarr;
+            </a>
+         </div>
+         
+         {/* Background click area fallback */}
+         <a href={`/${lang}/blog`} class="absolute inset-0 z-10" aria-label="Go to Blog"></a>
+      </Tile>
+
+    </div>
+  </main>
+</Layout>
