@@ -19,13 +19,13 @@ const { lang } = Astro.params;
 const i18n = {
   en: {
     intro: "Hi, I'm Mateusz Margos. I build full-stack web applications and scalable cloud systems.",
-    resume: "Download Resume",
+    resume: "Grab my resume",
     social: "Find me on",
     blog: "Read my Blog",
   },
   pl: {
     intro: "Cześć, jestem Mateusz Margos. Tworzę aplikacje webowe full-stack i skalowalne systemy chmurowe.",
-    resume: "Pobierz CV",
+    resume: "Pobierz moje CV",
     social: "Znajdź mnie",
     blog: "Czytaj Bloga",
   },
@@ -65,15 +65,15 @@ const recentPosts = allPosts
       </Tile>
 
       {/* 2. RESUME (1x2 now to fill gap) */}
-      <Tile className="col-span-1 md:col-span-1 md:row-span-2 flex flex-col items-center justify-center relative group" hoverColor="green">
-        <FaDownload class="w-16 h-16 mb-4 group-hover:scale-110 transition-transform" />
-        <span class="font-bold text-xl">{t.resume}</span>
+      <Tile className="col-span-1 md:col-span-1 md:row-span-2 flex flex-col items-center justify-around relative group" hoverColor="green">
+        <span class="font-bold text-5xl text-center">{t.resume}</span>
+        <FaDownload class="w-64 h-64 mb-4 group-hover:scale-110 transition-transform" />
         <a href="/resume.pdf" download class="absolute inset-0"></a>
       </Tile>
 
       {/* 3. SOCIAL (1x2) - 2x2 Grid Layout */}
       <Tile className="col-span-1 md:col-span-1 md:row-span-2 flex flex-col items-center justify-center gap-8" hoverColor="orange">
-        <h3 class="text-xl font-bold">{t.social}</h3>
+        <h3 class="text-5xl font-bold">{t.social}</h3>
         <div class="grid grid-cols-[100px_100px] w-[200px]">
           <div class="flex items-center justify-center p-4">
              <a href="https://github.com/margosmat" class="text-5xl md:text-6xl hover:text-black dark:hover:text-white transition-colors hover:scale-110 duration-200" aria-label="Github"><FaGithub /></a>

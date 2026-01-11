@@ -19,7 +19,7 @@ export default function Tile({ children, className = '', hoverColor = 'blue' }: 
   const hoverClass = colorMap[hoverColor];
 
   return (
-    <div className={`bg-tile rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] shadow-sm hover:shadow-md ${hoverClass} ${className}`}>
+    <div className={`bg-tile rounded-md p-6 transition-all duration-300 hover:scale-[1.02] shadow-sm hover:shadow-md ${hoverClass} ${className}`}>
       {children}
     </div>
   );
