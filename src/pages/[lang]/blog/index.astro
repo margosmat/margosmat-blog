@@ -3,6 +3,8 @@ import Layout from '../../../layouts/Layout.astro';
 import Tile from '../../../components/Tile';
 import { getCollection } from 'astro:content';
 
+import { useTranslations, ui } from '../../../i18n/utils';
+
 export function getStaticPaths() {
   return [
     { params: { lang: 'en' } },
@@ -11,14 +13,15 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
+const t = useTranslations(lang as keyof typeof ui);
 
 const allPosts = await getCollection('blog');
 const posts = allPosts
   .filter(post => post.data.lang === lang)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const title = lang === 'en' ? "Blog" : "Blog";
-const backText = lang === 'en' ? "Back to Home" : "Powrót";
+const title = t('blog.title');
+const backText = t('blog.back');
 ---
 
 <Layout title={`${title} - Mateusz Margos`} lang={lang as string}>
@@ -47,7 +50,7 @@ const backText = lang === 'en' ? "Back to Home" : "Powrót";
       
       {posts.length === 0 && (
         <div class="col-span-full text-center py-12 opacity-60">
-            No posts found.
+            {t('blog.noPosts')}
         </div>
       )}
     </div>

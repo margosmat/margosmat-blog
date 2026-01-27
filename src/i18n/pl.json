@@ -1,0 +1,11 @@
+{
+  "intro": "Cześć, jestem Mateusz Margos. Tworzę aplikacje webowe full-stack i skalowalne systemy chmurowe.",
+  "resume": "Pobierz moje CV",
+  "social": "Znajdź mnie na",
+  "blog": "Czytaj Bloga",
+  "technologies": "Technologie",
+  "blog.title": "Blog",
+  "blog.back": "Powrót",
+  "blog.noPosts": "Nie znaleziono postów.",
+  "blog.noPostsYet": "Brak postów."
+}
