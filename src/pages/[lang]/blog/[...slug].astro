@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
+import ThemeToggle from '../../../components/ThemeToggle';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -18,6 +19,15 @@ const backText = lang === 'en' ? "Back to Blog" : "Powrót do Bloga";
 ---
 
 <Layout title={`${post.data.title} - Mateusz Margos`} lang={lang}>
+  {/* Controls Overlay - Top Right */}
+  <div class="fixed top-4 right-4 z-50 flex items-center gap-4 bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-sm border border-foreground/10">
+      <ThemeToggle client:load />
+      <div class="h-6 w-px bg-foreground/20"></div>
+      <a href={lang === 'en' ? '/pl' : '/en'} class="font-bold hover:underline text-lg px-1 min-w-[2rem] text-center">
+        {lang === 'en' ? 'PL' : 'EN'}
+      </a>
+  </div>
+
   <article class="min-h-screen p-4 md:p-8 flex justify-center">
     <div class="max-w-3xl w-full">
         <div class="mb-8">
@@ -30,7 +40,7 @@ const backText = lang === 'en' ? "Back to Blog" : "Powrót do Bloga";
              </div>
         </div>
         
-        <div class="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-500 transition-colors">
+        <div class="markdown-content max-w-none">
             <Content />
         </div>
     </div>
