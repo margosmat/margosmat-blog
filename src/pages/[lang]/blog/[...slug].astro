@@ -5,10 +5,14 @@ import ThemeToggle from '../../../components/ThemeToggle';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map(post => ({
-    params: { lang: post.data.lang, slug: post.slug },
-    props: { post },
-  }));
+  return posts.map(post => {
+    // Strip the language prefix from the slug (e.g., 'en/post-slug' -> 'post-slug')
+    const slug = post.slug.replace(/^(en|pl)\//, '');
+    return {
+      params: { lang: post.data.lang, slug },
+      props: { post },
+    };
+  });
 }
 
 const { post } = Astro.props;
@@ -23,7 +27,7 @@ const backText = lang === 'en' ? "Back to Blog" : "Powrót do Bloga";
   <div class="fixed top-4 right-4 z-50 flex items-center gap-4 bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-sm border border-foreground/10">
       <ThemeToggle client:load />
       <div class="h-6 w-px bg-foreground/20"></div>
-      <a href={lang === 'en' ? '/pl' : '/en'} class="font-bold hover:underline text-lg px-1 min-w-[2rem] text-center">
+      <a href={lang === 'en' ? Astro.url.pathname.replace('/en', '/pl') : Astro.url.pathname.replace('/pl', '/en')} class="font-bold hover:underline text-lg px-1 min-w-[2rem] text-center">
         {lang === 'en' ? 'PL' : 'EN'}
       </a>
   </div>

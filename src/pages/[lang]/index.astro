@@ -31,7 +31,7 @@ const recentPosts = allPosts
   <div class="fixed top-4 right-4 z-50 flex items-center gap-4 bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-sm border border-foreground/10">
       <ThemeToggle client:load />
       <div class="h-6 w-px bg-foreground/20"></div>
-      <a href={lang === 'en' ? '/pl' : '/en'} class="font-bold hover:underline text-lg px-1 min-w-[2rem] text-center">
+      <a href={lang === 'en' ? Astro.url.pathname.replace('/en', '/pl') : Astro.url.pathname.replace('/pl', '/en')} class="font-bold hover:underline text-lg px-1 min-w-[2rem] text-center">
         {lang === 'en' ? 'PL' : 'EN'}
       </a>
   </div>
@@ -85,16 +85,19 @@ const recentPosts = allPosts
       <Tile className="col-span-1 md:col-span-2 md:row-span-2 p-8 relative group flex flex-col" hoverColor="red">
          <h2 class="text-3xl font-bold mb-6">Blog</h2>
          <div class="space-y-6 flex-1">
-            {recentPosts.map(post => (
-               <article class="group/post border-b border-foreground/10 pb-4 last:border-0 relative z-20">
-                   <a href={`/${lang}/blog/${post.slug}`} class="block group-hover/post:translate-x-2 transition-transform duration-200">
+            {recentPosts.map(post => {
+               const slug = post.slug.replace(/^(en|pl)\//, '');
+               return (
+               <article class="group/post border-b border-foreground/10 pb-4 last:border-0 relative z-20" key={post.id}>
+                   <a href={`/${lang}/blog/${slug}`} class="block group-hover/post:translate-x-2 transition-transform duration-200">
                      <h3 class="font-bold text-xl group-hover/post:text-red-500 transition-colors">{post.data.title}</h3>
                      <p class="text-sm opacity-60 mt-1">
                         {post.data.pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}
                      </p>
                    </a>
                </article>
-            ))}
+               );
+            })}
             {recentPosts.length === 0 && <p class="opacity-50">{t('blog.noPostsYet')}</p>}
          </div>
          
