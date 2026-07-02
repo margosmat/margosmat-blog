@@ -74,3 +74,9 @@ I voila! Mamy skonfigurowanego agenta `pi` z lokalnym modelem Ornith 1.0. Pierws
 ## Wnioski
 
 Jak widać lokalna konfiguracja modelu Ornith 1.0 nie jest specjalnie skomplikowana. Trzeba jednak mieć na uwadze, że działanie będzie odbiegać od tego do czego jesteśmy przyzwyczajeni przy korzystaniu z Codex czy Claude Code. Jednak mamy tutaj model w pełni działający offline, niezależnie od kaprysów dostawców frontier modeli. Sam Ornith pomógł mi już w kilku bugach na blogu, parę razy zdarzyło mu się zawiesić, ale będę dalej testował jego możliwości na swoich projektach. Pamiętajcie, żeby testować model w swoich workflow/use-case'ach, benchmarki mogą wyglądać świetnie, ale nie oddadzą tego jak model się sprawdzi w naszych warunkach.
+
+## Aktualizacja 02.07.26
+
+Po przetestowianiu lokalnej konfiguracji w kształcie jak powyżej polecam jednak zainstalować oMLX jako lokalny silnik inferencji. Jest zbudowany na bazie mlx-lm, ale dodatkowo posiada sprytny mechanizm zarządzania KV cach'em, pozwala dodawać konfigurację per model i ma zgrabny dashboard z danymi. W moim odczuciu model działa stabilniej, rzadziej zdarza mu się "zawiesić". Więcej informacji na [stronie projektu](https://omlx.ai/).
+
+![omlx dashboard](/images/omlx_dashboard.png)
